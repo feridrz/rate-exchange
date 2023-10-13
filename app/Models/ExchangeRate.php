@@ -8,7 +8,6 @@ use Laravel\Scout\Searchable;
 
 class ExchangeRate extends Model
 {
-    use Searchable;
     protected $fillable = ['from_currency_id', 'to_currency_id', 'rate'];
 
     public function fromCurrency()

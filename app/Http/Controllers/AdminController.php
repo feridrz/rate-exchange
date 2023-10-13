@@ -11,12 +11,19 @@ class AdminController extends Controller
         $search = $request->input('search');
 
         if ($search) {
-            $exchangeRates = ExchangeRate::search($search)->paginate(15);
+            $exchangeRates = ExchangeRate::with(['fromCurrency', 'toCurrency'])
+                ->whereHas('fromCurrency', function($query) use ($search) {
+                    $query->where('code', 'like', '%' . $search . '%');
+                })
+                ->orWhereHas('toCurrency', function($query) use ($search) {
+                    $query->where('code', 'like', '%' . $search . '%');
+                })
+                ->paginate(15);
         } else {
             $exchangeRates = ExchangeRate::with(['fromCurrency', 'toCurrency'])->paginate(15);
         }
 
-        if($search) {
+        if ($search) {
             $exchangeRates->appends(['search' => $search]);
         }
 
