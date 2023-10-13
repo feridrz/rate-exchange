@@ -32,7 +32,7 @@ class CurrencyConversionController extends Controller
                 $request->input('from_code'),
                 $request->input('to_code')
             );
-            // redirect back to the form route and flash converted amount in the session.
+
             return redirect()->back()->with('converted_amount', $convertedAmount)->withInput();
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Conversion failed.')->withInput();
